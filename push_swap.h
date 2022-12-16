@@ -22,4 +22,17 @@ void	swap(t_stack *stack);
 void	rotate(t_stack *stack);
 void	print_stack(t_stack *stack);
 
+void	push_swap_fun(t_stack *a, t_stack *b);
+void	swap_a(t_stack *a, t_stack *b);
+void	swap_b(t_stack *a, t_stack *b);
+void	swap_ab(t_stack *a, t_stack *b);
+void	push_a(t_stack *a, t_stack *b);
+void	push_b(t_stack *a, t_stack *b);
+void	rotate_a(t_stack *a, t_stack *b);
+void	rotate_b(t_stack *a, t_stack *b);
+void	rotate_ab(t_stack *a, t_stack *b);
+void	reverse_rotate_a(t_stack *a, t_stack *b);
+void	reverse_rotate_b(t_stack *a, t_stack *b);
+void	reverse_rotate_ab(t_stack *a, t_stack *b);
+
 #endif

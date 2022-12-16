@@ -1,9 +1,26 @@
 #include "push_swap.h"
-#include <stdio.h>
 
-int	main(int argc, char **argv)
+void	swap_a(t_stack *a, t_stack *b)
 {
-	(void) argc;
-	(void) argv;
-	printf("sa\npb\npb\npb\nsa\npa\npa\npa");
+	return ;
+}
+
+void	swap_b(t_stack *a, t_stack *b)
+{
+	return ;
+}
+
+void	swap_ab(t_stack *a, t_stack *b)
+{
+	return ;
+}
+
+void	push_a(t_stack *a, t_stack *b)
+{
+	return ;
+}
+
+void	push_b(t_stack *a, t_stack *b)
+{
+	return ;
 }
