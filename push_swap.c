@@ -2,25 +2,30 @@
 
 void	swap_a(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) b;
+	swap(a);
 }
 
 void	swap_b(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) a;
+	swap(b);
 }
 
 void	swap_ab(t_stack *a, t_stack *b)
 {
-	return ;
+	swap(a);
+	swap(b);
 }
 
 void	push_a(t_stack *a, t_stack *b)
 {
-	return ;
+	if (b->count >= 1)
+		push(a, pop(b));
 }
 
 void	push_b(t_stack *a, t_stack *b)
 {
-	return ;
+	if (a->count >= 1)
+		push(b, pop(a));
 }

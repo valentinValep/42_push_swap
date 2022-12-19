@@ -2,25 +2,30 @@
 
 void	rotate_a(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) b;
+	rotate(a);
 }
 
 void	rotate_b(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) a;
+	rotate(b);
 }
 
 void	rotate_ab(t_stack *a, t_stack *b)
 {
-	return ;
+	rotate(a);
+	rotate(b);
 }
 
 void	reverse_rotate_a(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) b;
+	reverse_rotate(a);
 }
 
 void	reverse_rotate_b(t_stack *a, t_stack *b)
 {
-	return ;
+	(void) a;
+	reverse_rotate(b);
 }

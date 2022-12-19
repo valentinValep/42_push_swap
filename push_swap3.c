@@ -2,5 +2,6 @@
 
 void	reverse_rotate_ab(t_stack *a, t_stack *b)
 {
-	return ;
+	reverse_rotate(a);
+	reverse_rotate(b);
 }

@@ -1,17 +1,22 @@
-#include <stdio.h>
+#include <stdio.h> // @TODO RM
 #include <stdlib.h>
 #include "push_swap.h"
-
+// @TODO Moulinette
 void	free_stack(t_stack *stack)
 {
 	t_elem	*elem;
 
-	while (elem && elem->next)
+	if (!stack->count)
+		return ;
+	elem = stack->ceil;
+	while (elem && elem->before)
 	{
 		free(elem);
+		elem = elem->before;
+		stack->count--;
 	}
 	if (elem)
-		free(elem);
+		free((stack->count--, elem));
 }
 
 void	init_stack(t_stack *stack)
@@ -23,7 +28,19 @@ void	init_stack(t_stack *stack)
 
 static int	ft_atoi(char *str)
 {
-	return (0); // @TODO
+	int	i;
+	int	res;
+	int	neg;
+
+	i = 0;
+	res = 0;
+	i += ((neg = str[i] == '-') || str[i] == '+');
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = res * 10 + str[i] - '0';
+		i++;
+	}
+	return (res * (!neg - neg));
 }
 
 int	init_a(t_stack *a, int argc, char **argv)
@@ -31,9 +48,8 @@ int	init_a(t_stack *a, int argc, char **argv)
 	int		i;
 	t_elem	*current_elem;
 
-	init_stack(a);
-	i = 1;
-	while (i < argc)
+	init_stack((i = 0, a));
+	while (++i < argc)
 	{
 		current_elem = malloc(sizeof(t_elem));
 		if (!current_elem)
@@ -42,17 +58,15 @@ int	init_a(t_stack *a, int argc, char **argv)
 		if (i == 1)
 		{
 			a->floor = current_elem;
-			a->ceil = current_elem;
 			current_elem->before = NULL;
-			current_elem->next = NULL;
 		}
 		else
 		{
 			current_elem->before = a->ceil;
-			current_elem->next = NULL;
 			a->ceil->next = current_elem;
-			a->ceil = current_elem;
 		}
+		a->ceil = current_elem;
+		current_elem->next = NULL;
 	}
 	a->count = argc - 1;
 	return (0);
@@ -69,5 +83,13 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	init_stack(&b);
+
+	print_stack(&a);
+	print_stack(&b);
+	swap_a(&a, &b);
+	print_stack(&a);
+	print_stack(&b);
+
 	free_stack(&a);
+	free_stack(&b);
 }

@@ -2,6 +2,24 @@
 #include <unistd.h>
 #include "push_swap.h"
 
+void	print_stack(t_stack *stack) // @TODO del
+{
+	t_elem	*elem;
+	int		i;
+
+	elem = stack->floor;
+	i = 0;
+	write(STDOUT_FILENO, "[", 1);
+	while (stack->count > i)
+	{
+		ft_put_nbr(elem->data);
+		elem = elem->next;
+		write(STDOUT_FILENO, ", ", (i < stack->count - 1) * 2);
+		i++;
+	}
+	write(STDOUT_FILENO, "]\n", 2);
+}
+
 void	push(t_stack *stack, t_elem *elem)
 {
 	stack->ceil->next = elem;
@@ -32,13 +50,34 @@ void	swap(t_stack *stack)
 		return ;
 	tmp = stack->ceil;
 	stack->ceil = stack->ceil->before;
-	stack->ceil->before = tmp;
 	stack->ceil->next = NULL;
 	tmp->next = stack->ceil;
 	tmp->before = stack->ceil->before;
+	tmp->before->next = tmp;
+	stack->ceil->before = tmp;
 }
 
 void	rotate(t_stack *stack)
+{
+	t_elem	*ex_floor;
+
+	if (stack->count == 0)
+		return ;
+	if (stack->count == 1)
+	{
+		swap(stack);
+		return ;
+	}
+	ex_floor = stack->floor;
+	stack->floor = stack->ceil;
+	stack->ceil = stack->ceil->before;
+	stack->ceil->next = NULL;
+	stack->floor->next = ex_floor;
+	stack->floor->before = NULL;
+	ex_floor->before = stack->floor;
+}
+
+void	reverse_rotate(t_stack *stack)
 {
 	t_elem	*ex_ceil;
 
@@ -56,24 +95,4 @@ void	rotate(t_stack *stack)
 	stack->ceil->before = ex_ceil;
 	stack->ceil->next = NULL;
 	ex_ceil->next = stack->ceil;
-}
-
-void	print_stack(t_stack *stack)
-{
-	t_elem	*elem;
-
-	elem = stack->floor;
-	write(STDOUT_FILENO, "[", 1);
-	while (elem && elem->next)
-	{
-		ft_put_nbr(elem->data);
-		elem = elem->next;
-		write(STDOUT_FILENO, ", ", 1);
-	}
-	if (elem)
-	{
-		ft_put_nbr(elem->data);
-		write(STDOUT_FILENO, ", ", 1);
-	}
-	write(STDOUT_FILENO, "]", 1);
 }

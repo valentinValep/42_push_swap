@@ -20,7 +20,8 @@ void	push(t_stack *stack, t_elem *elem);
 t_elem	*pop(t_stack *stack);
 void	swap(t_stack *stack);
 void	rotate(t_stack *stack);
-void	print_stack(t_stack *stack);
+void	reverse_rotate(t_stack *stack);
+void	print_stack(t_stack *stack); // @TODO RM
 
 void	push_swap_fun(t_stack *a, t_stack *b);
 void	swap_a(t_stack *a, t_stack *b);
