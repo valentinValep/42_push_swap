@@ -1,31 +1,82 @@
 #include "push_swap.h"
 
-void	swap_a(t_stack *a, t_stack *b)
+void	ft_swap(int *a, int *b)
 {
-	(void) b;
-	swap(a);
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+#include <stdio.h>
+void	swap(t_stack_pair *stacks, char flag)
+{
+	if (flag & STACK_A)
+	{
+		if (stacks->len_a < 2)
+			return ;
+		ft_swap(stacks->tab + stacks->len_a -1, stacks->tab + stacks->len_a -2);
+	}
+	if (flag & STACK_B)
+	{
+		if (stacks->size - stacks->len_a < 2)
+			return ;
+		ft_swap(stacks->tab + stacks->size - stacks->len_a -1,
+			stacks->tab + stacks->size - stacks->len_a -2);
+	}
 }
 
-void	swap_b(t_stack *a, t_stack *b)
+void	push(t_stack_pair *stacks, char flag)
 {
-	(void) a;
-	swap(b);
+	stacks->len_a += (
+			(flag < 3
+				&& !(flag == 1 && stacks->len_a == stacks->size)
+				&& !(flag == 2 && !stacks->len_a))
+			* ((flag + 1) % 3 -1));
 }
 
-void	swap_ab(t_stack *a, t_stack *b)
+void	rotate(t_stack_pair *stacks, char flag)
 {
-	swap(a);
-	swap(b);
+	int	tmp;
+
+	if (flag & STACK_A)
+	{
+		if (stacks->len_a < 2)
+			return ;
+		tmp = stacks->tab[stacks->len_a - 1];
+		ft_intmove(stacks->tab + 1, stacks->tab, stacks->len_a - 1);
+		stacks->tab[0] = tmp;
+	}
+	if (flag & STACK_B)
+	{
+		if (stacks->size - stacks->len_a < 2)
+			return ;
+		tmp = stacks->tab[stacks->len_a];
+		ft_intmove(stacks->tab + stacks->len_a, stacks->tab + stacks->len_a + 1,
+			stacks->size - stacks->len_a - 1);
+		stacks->tab[stacks->size - 1] = tmp;
+	}
 }
 
-void	push_a(t_stack *a, t_stack *b)
+void	reverse_rotate(t_stack_pair *stacks, char flag)
 {
-	if (b->count >= 1)
-		push(a, pop(b));
-}
+	int	tmp;
 
-void	push_b(t_stack *a, t_stack *b)
-{
-	if (a->count >= 1)
-		push(b, pop(a));
+	if (flag & STACK_A)
+	{
+		if (stacks->len_a < 2)
+			return ;
+		tmp = stacks->tab[0];
+		ft_intmove(stacks->tab, stacks->tab + 1, stacks->len_a -1);
+		stacks->tab[stacks->len_a -1] = tmp;
+	}
+	if (flag & STACK_B)
+	{
+		if (stacks->size - stacks->len_a < 2)
+			return ;
+		tmp = stacks->tab[stacks->size -1];
+		ft_intmove(stacks->tab + stacks->len_a + 1, stacks->tab + stacks->len_a,
+			stacks->size - stacks->len_a -1);
+		stacks->tab[stacks->len_a] = tmp;
+	}
 }

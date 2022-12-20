@@ -1,96 +1,57 @@
 #include <stdio.h> // @TODO RM
 #include <stdlib.h>
+#include <unistd.h>
 #include "push_swap.h"
 // @TODO Moulinette
-void	free_stack(t_stack *stack)
+// @TODO RM
+void	print_stacks(t_stack_pair *stacks)
 {
-	t_elem	*elem;
+	int			i;
+	int			space_count;
+	const int	max_len = (int []){stacks->len_a, stacks->size - stacks->len_a}
+	[stacks->len_a < stacks->size - stacks->len_a];
 
-	if (!stack->count)
-		return ;
-	elem = stack->ceil;
-	while (elem && elem->before)
+	i = max_len - 1;
+	write(STDOUT_FILENO, "A            B\n", 15);
+	while (i >= 0)
 	{
-		free(elem);
-		elem = elem->before;
-		stack->count--;
-	}
-	if (elem)
-		free((stack->count--, elem));
-}
-
-void	init_stack(t_stack *stack)
-{
-	stack->ceil = NULL;
-	stack->floor = NULL;
-	stack->count = 0;
-}
-
-static int	ft_atoi(char *str)
-{
-	int	i;
-	int	res;
-	int	neg;
-
-	i = 0;
-	res = 0;
-	i += ((neg = str[i] == '-') || str[i] == '+');
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = res * 10 + str[i] - '0';
-		i++;
-	}
-	return (res * (!neg - neg));
-}
-
-int	init_a(t_stack *a, int argc, char **argv)
-{
-	int		i;
-	t_elem	*current_elem;
-
-	init_stack((i = 0, a));
-	while (++i < argc)
-	{
-		current_elem = malloc(sizeof(t_elem));
-		if (!current_elem)
-			return (1);
-		current_elem->data = ft_atoi(argv[i]);
-		if (i == 1)
-		{
-			a->ceil = current_elem;
-			current_elem->next = NULL;
-		}
+		if (i < stacks->len_a)
+			ft_put_nbr(stacks->tab[i]);
 		else
-		{
-			current_elem->next = a->floor;
-			a->floor->before = current_elem;
-		}
-		a->floor = current_elem;
-		current_elem->before = NULL;
+			write(STDOUT_FILENO, " ", 1);
+		space_count = -1;
+		while (++space_count < 13 - ft_int_count(stacks->tab[i]))
+			write(STDOUT_FILENO, " ", 1);
+		if (i < stacks->size - stacks->len_a)
+			ft_put_nbr(stacks->tab[stacks->size - 1 - i]);
+		write(STDOUT_FILENO, "\n", 1);
+		i--;
 	}
-	a->count = argc - 1;
-	return (0);
+	write(STDOUT_FILENO, "\n----------------\n", 18);
 }
 
 int	main(int argc, char **argv)
 {
-	t_stack	a;
-	t_stack	b;
+	t_stack_pair	stacks;
+	int				i;
 
-	if (init_a(&a, argc, argv))
-	{
-		free_stack(&a);
+	stacks.size = argc - 1;
+	stacks.len_a = stacks.size;
+	stacks.tab = malloc((stacks.size) * sizeof(int));
+	if (!stacks.tab)
 		return (1);
-	}
-	init_stack(&b);
-
-	print_stack(&a);
-	print_stack(&b);
-	swap_a(&a, &b);
-	push_b(&a, &b);
-	print_stack(&a);
-	print_stack(&b);
-
-	free_stack(&a);
-	free_stack(&b);
+	i = -1;
+	while (++i < stacks.size)
+		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
+	print_stacks(&stacks);
+	push(&stacks, STACK_B);
+	push(&stacks, STACK_B);
+	push(&stacks, STACK_B);
+	print_stacks(&stacks);
+	rotate(&stacks, STACK_A | STACK_B);
+	print_stacks(&stacks);
+	swap(&stacks, STACK_A);
+	print_stacks(&stacks);
+	free(stacks.tab);
+	return (0);
 }
