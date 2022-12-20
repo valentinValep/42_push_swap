@@ -7,28 +7,30 @@ void	print_stack(t_stack *stack) // @TODO del
 	t_elem	*elem;
 	int		i;
 
-	elem = stack->floor;
-	i = 0;
+	elem = stack->ceil;
+	i = stack->count - 1;
 	write(STDOUT_FILENO, "[", 1);
-	while (stack->count > i)
+	while (i >= 0)
 	{
 		ft_put_nbr(elem->data);
-		elem = elem->next;
-		write(STDOUT_FILENO, ", ", (i < stack->count - 1) * 2);
-		i++;
+		elem = elem->before;
+		write(STDOUT_FILENO, ", ", !!i * 2);
+		i--;
 	}
 	write(STDOUT_FILENO, "]\n", 2);
 }
 
 void	push(t_stack *stack, t_elem *elem)
 {
+	if (!elem)
+		return ;
 	stack->ceil->next = elem;
 	elem->next = NULL;
 	elem->before = stack->ceil;
 	stack->ceil = elem;
 	stack->count++;
 }
-
+#include <stdio.h>
 t_elem	*pop(t_stack *stack)
 {
 	t_elem	*res;
@@ -37,6 +39,8 @@ t_elem	*pop(t_stack *stack)
 		return (NULL);
 	res = stack->ceil;
 	stack->ceil = res->before;
+	res->before = NULL;
+	res->next = NULL;
 	stack->ceil->next = NULL;
 	stack->count--;
 	return (res);

@@ -57,16 +57,16 @@ int	init_a(t_stack *a, int argc, char **argv)
 		current_elem->data = ft_atoi(argv[i]);
 		if (i == 1)
 		{
-			a->floor = current_elem;
-			current_elem->before = NULL;
+			a->ceil = current_elem;
+			current_elem->next = NULL;
 		}
 		else
 		{
-			current_elem->before = a->ceil;
-			a->ceil->next = current_elem;
+			current_elem->next = a->floor;
+			a->floor->before = current_elem;
 		}
-		a->ceil = current_elem;
-		current_elem->next = NULL;
+		a->floor = current_elem;
+		current_elem->before = NULL;
 	}
 	a->count = argc - 1;
 	return (0);
@@ -87,6 +87,7 @@ int	main(int argc, char **argv)
 	print_stack(&a);
 	print_stack(&b);
 	swap_a(&a, &b);
+	push_b(&a, &b);
 	print_stack(&a);
 	print_stack(&b);
 
