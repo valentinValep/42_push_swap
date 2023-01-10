@@ -43,6 +43,7 @@ int	main(int argc, char **argv)
 	i = -1;
 	while (++i < stacks.size)
 		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
+	//
 	print_stacks(&stacks);
 	push(&stacks, STACK_B);
 	push(&stacks, STACK_B);
@@ -52,6 +53,7 @@ int	main(int argc, char **argv)
 	print_stacks(&stacks);
 	swap(&stacks, STACK_A);
 	print_stacks(&stacks);
+	//
 	free(stacks.tab);
 	return (0);
 }

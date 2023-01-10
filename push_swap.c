@@ -13,9 +13,9 @@ void	swap(t_stack_pair *stacks, char flag)
 {
 	if (flag & STACK_A)
 	{
-		if (stacks->len_a < 2)
-			return ;
-		ft_swap(stacks->tab + stacks->len_a -1, stacks->tab + stacks->len_a -2);
+		if (stacks->len_a >= 2)
+			ft_swap(stacks->tab + stacks->len_a -1,
+				stacks->tab + stacks->len_a -2);
 	}
 	if (flag & STACK_B)
 	{
@@ -41,11 +41,12 @@ void	rotate(t_stack_pair *stacks, char flag)
 
 	if (flag & STACK_A)
 	{
-		if (stacks->len_a < 2)
-			return ;
-		tmp = stacks->tab[stacks->len_a - 1];
-		ft_intmove(stacks->tab + 1, stacks->tab, stacks->len_a - 1);
-		stacks->tab[0] = tmp;
+		if (stacks->len_a >= 2)
+		{
+			tmp = stacks->tab[stacks->len_a - 1];
+			ft_intmove(stacks->tab + 1, stacks->tab, stacks->len_a - 1);
+			stacks->tab[0] = tmp;
+		}
 	}
 	if (flag & STACK_B)
 	{
@@ -64,11 +65,12 @@ void	reverse_rotate(t_stack_pair *stacks, char flag)
 
 	if (flag & STACK_A)
 	{
-		if (stacks->len_a < 2)
-			return ;
-		tmp = stacks->tab[0];
-		ft_intmove(stacks->tab, stacks->tab + 1, stacks->len_a -1);
-		stacks->tab[stacks->len_a -1] = tmp;
+		if (stacks->len_a >= 2)
+		{
+			tmp = stacks->tab[0];
+			ft_intmove(stacks->tab, stacks->tab + 1, stacks->len_a -1);
+			stacks->tab[stacks->len_a -1] = tmp;
+		}
 	}
 	if (flag & STACK_B)
 	{
