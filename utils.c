@@ -15,13 +15,13 @@ int	ft_int_count(int n)
 	return (i + 1);
 }
 
-void	ft_put_nbr(int nbr)
+void	ft_swap(int *a, int *b)
 {
-	if (nbr / 10)
-		ft_put_nbr(nbr / 10);
-	else
-		write(STDOUT_FILENO, "-", nbr < 0);
-	write(STDOUT_FILENO, &(char){nbr % 10 *~-((nbr > 0) * 2) + 48}, 1);
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
 int	ft_atoi(char *str)

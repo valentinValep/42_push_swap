@@ -5,9 +5,9 @@
 
 # define STACK_A 1
 # define STACK_B 2
-# define STACKS_AB 3 // STACK_A | STACK_B
+# define STACKS_AB 3 // = STACK_A | STACK_B
 
-void	ft_put_nbr(int nbr);
+void	ft_swap(int *a, int *b)
 int		ft_int_count(int n);
 int		ft_atoi(char *str);
 void	*ft_intmove(int *dest, int *src, size_t size);
@@ -20,9 +20,9 @@ typedef struct s_stack_pair {
 
 void	print_stacks(t_stack_pair *stacks);
 
-void	swap(t_stack_pair *stacks, char flag);
-void	push(t_stack_pair *stacks, char flag);
-void	rotate(t_stack_pair *stacks, char flag);
-void	reverse_rotate(t_stack_pair *stacks, char flag);
+char	*swap(t_stack_pair *stacks, char flag);
+char	*push(t_stack_pair *stacks, char flag);
+char	*rotate(t_stack_pair *stacks, char flag);
+char	*reverse_rotate(t_stack_pair *stacks, char flag);
 
 #endif
