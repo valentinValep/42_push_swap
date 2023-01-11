@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2022/12/20 18:50:27 by vlepille         ###   ########.fr        #
+#    Updated: 2023/01/11 14:22:21 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ FLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I.
 
-SRC = push_swap.c \
+SRC = stack.c \
 	utils.c \
 	main.c
 
-OBJ = push_swap.o \
+OBJ = stack.o \
 	utils.o \
 	main.o
 
