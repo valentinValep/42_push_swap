@@ -48,20 +48,21 @@ int	*sorted(int tab[], int size)
 	int	j;
 	int	mini;
 
-	i = -1;
-	while (++i < size)
 	res = malloc(sizeof(int) * size);
 	if (!res)
 		exit(1);
 	i = -1;
+	while (++i < size)
+		res[i] = tab[i];
+	i = -1;
 	while (++i < size - 1)
 	{
 		j = i;
-		mini = res[j];
+		mini = j;
 		while (++j < size)
-			if (res[j] < mini)
-				mini = res[j];
-		ft_swap(res[i], res[mini]);
+			if (res[j] < res[mini])
+				mini = j;
+		ft_swap(res + i, res + mini);
 	}
 	return (res);
 }
@@ -76,22 +77,79 @@ int	get_median(int tab[], int size)
 	return (res);
 }
 
-// function which push @TODO
-void	sort_median(t_stack_pair *stacks, int flag, int count)
+// function which push every int of a stack bellow median to the other stack
+void	push_median(t_stack_pair *stacks, int flag, int count)
 {
-	const int	median = get_median(stacks->tab + (flag - 1) * stacks->len_a,
-			stacks->len_a * (flag % 2)
-			+ (stacks->size - stacks->len_a) * (flag - 1));
+	t_stack_group	group;
+	int				median;
 
-	// @TODO
+	group.size = count;
+	fill_group(stacks, flag, &group);
+	median = get_median(group.tab, group.size);
+	pull_up_according_med(stacks, flag, median);
+}
+
+int	get(t_stack_pair *stacks, int flag, int rank)
+{
+	if (flag == STACK_A)
+		return (stacks->tab[stacks->len_a - 1 - rank]);
+	if (flag == STACK_B)
+		return (stacks->tab[stacks->len_a + rank]);
+}
+
+void	sort_3len_stack(t_stack_pair *stacks, int flag)
+{
+	if (flag == STACK_A)
+	{
+		// 0 1 2
+		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
+			return ; // ok
+		// 0 2 1
+		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
+			return ; // p s pi
+		// 1 2 0
+		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
+			return ; // p s pi s
+		// 1 0 2
+		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
+			return ; // s
+		// 2 1 0
+		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
+			return ; // p s p si pi s pi
+		// 2 0 1
+		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
+			return ; // s p s pi
+	}
+}
+
+void	sort_little_stack(t_stack_pair *stacks, int flag, int count)
+{
+	if (count == 1)
+		return ;
+	if (count == 2)
+	{
+		if (flag == STACK_A)
+			if (stacks->tab[stacks->len_a - 1] > stacks->tab[stacks->len_a - 2])
+				swap(stacks, flag);
+		if (flag == STACK_B)
+			if (stacks->tab[stacks->len_a] < stacks->tab[stacks->len_a + 1])
+				swap(stacks, flag);
+	}
+	if (count == 3)
+	{
+		sort_3len_stack(stacks, flag);
+	}
 }
 
 void	sort_stack(t_stack_pair *stacks, int flag, int count)
 {
-	// if count > 3 else use another things (idk what)
-	sort_median(stacks, flag, count);
-
-	// @TODO
+	while (count > 3)
+	{
+		push_median(stacks, flag, count);
+		count /= 2;
+	}
+	if (count <= 3)
+		sort_little_stack(stacks, flag, count);
 }
 
 /* --------------------------------------------- */

@@ -56,4 +56,3 @@ void	*ft_intmove(int *dest, int *src, size_t size)
 	}
 	return (dest);
 }
-
