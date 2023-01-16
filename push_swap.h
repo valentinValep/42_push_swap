@@ -3,8 +3,8 @@
 
 # include <stddef.h>
 
-# define STACK_A 1
-# define STACK_B 2
+# define STACK_A 1 // never change
+# define STACK_B 2 // never change
 # define STACKS_AB 3 // = STACK_A | STACK_B
 
 # define PRINT_STACK_OPERATION 1

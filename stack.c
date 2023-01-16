@@ -14,8 +14,8 @@ void	swap(t_stack_pair *stacks, char flag)
 	{
 		if (stacks->size - stacks->len_a < 2)
 			return ;
-		ft_swap(stacks->tab + stacks->size - stacks->len_a,
-			stacks->tab + stacks->size - stacks->len_a -1);
+		ft_swap(stacks->tab + stacks->len_a,
+			stacks->tab + stacks->len_a +1);
 	}
 	if (PRINT_STACK_OPERATION)
 		write(STDOUT_FILENO,

@@ -1,5 +1,6 @@
 #include "push_swap.h"
 
+// @TODO do a return to check if fail
 void	fill_group(t_stack_pair *stacks, char flag, t_stack_group *group)
 {
 	if (flag & STACK_A)
