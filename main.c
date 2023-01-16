@@ -89,17 +89,28 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 	pull_up_according_med(stacks, flag, median);
 }
 
+int	is_final_ceil(t_stack_pair *stacks, int flag, int n)
+{
+	return (n == (stacks->size -1) * (flag == STACK_B));
+}
+
 int	get_sorted_end_count(t_stack_pair *stacks, int flag)
 {
 	int	i;
 
 	i = 0;
-	while (get_stack(stacks, flag, -i -1)
+	while (i < get_size(stacks, flag) && get_stack(stacks, flag, -i -1)
 		== get_stack(stacks, flag, -i -2) + (flag == STACK_A) * 2 - 1)
 		i++;
-	if (get_stack(stacks, flag, -i -1) == (stacks->size -1) * (flag == STACK_B))
+	if (is_final_ceil(stacks, flag, get_stack(stacks, flag, -i -1)))
 		return (i + 1);
 	return (0);
+}
+
+int	is_under_next_ceil_bottom(t_stack_pair *stacks, int flag, int n)
+{
+	return (get_sorted_end_count(stacks, flag)
+		&& (n == get_stack(stacks, flag, -1) + (flag == STACK_A) * 2 - 1));
 }
 
 void	sort_stack(t_stack_pair *stacks, int flag)
@@ -110,23 +121,36 @@ void	sort_stack(t_stack_pair *stacks, int flag)
 	printf("count<%d>\n", count);
 	while (count > 0)
 	{
-		if (!get_stack(stacks, STACK_A, 0) || (get_stack(stacks, STACK_A, 0)
-				== get_stack(stacks, STACK_A, -1) + 1
-				&& get_sorted_end_count(stacks, STACK_A)))
-			rotate(stacks, STACK_A);
+		if (is_final_ceil(stacks, flag, get_stack(stacks, flag, 0))
+			|| is_under_next_ceil_bottom(stacks,
+				flag, get_stack(stacks, flag, 0)))
+			rotate(stacks, flag);
 		else
 		{
-			push(stacks, STACK_B);
-			while (get_size(stacks, STACK_B) > 1 && (get_stack(stacks, STACK_B, 0)
-					== stacks->size -1 || ((get_stack(stacks, STACK_B, 0)
-							== get_stack(stacks, STACK_B, -1) - 1)
-						&& get_sorted_end_count(stacks, STACK_B))))
-				rotate(stacks, STACK_B);
+			flag = (flag == STACK_A) + 1;
+			push(stacks, flag);
+			while (get_size(stacks, flag) > 1
+				&& ((is_final_ceil(stacks, flag, get_stack(stacks, flag, 0)) && get_sorted_end_count(stacks, flag) != get_size(stacks, flag))
+					|| is_under_next_ceil_bottom(
+						stacks, flag, get_stack(stacks, flag, 0))))
+				rotate(stacks, flag);
+			flag = (flag == STACK_A) + 1;
 		}
 		count--;
 	}
-	if (get_sorted_end_count(stacks, STACK_A) != stacks->size)
-		sort_stack(stacks, (flag == STACK_A) + 1);
+	print_stacks(stacks);
+	flag = (flag == STACK_A) + 1;
+	if (get_sorted_end_count(stacks, flag) != get_size(stacks, flag))
+		sort_stack(stacks, flag);
+}
+
+void	sort(t_stack_pair *stacks)
+{
+	sort_stack(stacks, STACK_A);
+	while (get_size(stacks, STACK_B))
+		push(stacks, STACK_A);
+	while (get_sorted_end_count(stacks, STACK_A) != stacks->size)
+		rotate(stacks, STACK_A);
 }
 
 /* --------------------------------------------- */
@@ -172,7 +196,7 @@ int	main(int argc, char **argv)
 		return (1);
 	// @TODO rm print_stacks
 	print_stacks(&stacks);
-	sort_stack(&stacks, STACK_A);
+	sort(&stacks);
 	print_stacks(&stacks);
 	// @TODO rm print_stacks
 	free(stacks.tab);
