@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/01/13 16:04:19 by vlepille         ###   ########.fr        #
+#    Updated: 2023/01/16 19:34:35 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,14 @@ INCLUDES = -I.
 SRC = stack.c \
 	utils.c \
 	main.c \
-	stack_group.c
+	stack_group.c \
+	stack_utils.c
 
 OBJ = stack.o \
 	utils.o \
 	main.o \
-	stack_group.o
+	stack_group.o \
+	stack_utils.o
 
 RM = rm -f
 

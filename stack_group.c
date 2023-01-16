@@ -55,8 +55,8 @@ void	pull_up_according_med(t_stack_pair *stacks, char flag, int median)
 	{
 		while (continue_pull_up(stacks, flag, median))
 		{
-			rotated_count += (get_first(stacks, STACK_A) > median);
-			if (get_first(stacks, STACK_A) > median)
+			rotated_count += (get_stack(stacks, STACK_A, 0) > median);
+			if (get_stack(stacks, STACK_A, 0) > median)
 				rotate(stacks, STACK_A);
 			else
 				push(stacks, STACK_B);
@@ -66,8 +66,8 @@ void	pull_up_according_med(t_stack_pair *stacks, char flag, int median)
 	{
 		while (continue_pull_up(stacks, flag, median))
 		{
-			rotated_count += (get_first(stacks, STACK_B) < median);
-			if (get_first(stacks, STACK_B) < median)
+			rotated_count += (get_stack(stacks, STACK_B, 0) < median);
+			if (get_stack(stacks, STACK_B, 0) < median)
 				rotate(stacks, STACK_B);
 			else
 				push(stacks, STACK_A);

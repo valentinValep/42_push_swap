@@ -3,8 +3,8 @@
 
 # include <stddef.h>
 
-# define STACK_A 1 // never change
-# define STACK_B 2 // never change
+# define STACK_A 1 // don't change
+# define STACK_B 2 // don't change
 # define STACKS_AB 3 // = STACK_A | STACK_B
 
 # define PRINT_STACK_OPERATION 1
@@ -32,7 +32,9 @@ void	swap(t_stack_pair *stacks, char flag);
 void	push(t_stack_pair *stacks, char flag);
 void	rotate(t_stack_pair *stacks, char flag);
 void	reverse_rotate(t_stack_pair *stacks, char flag);
-int		get_first(t_stack_pair *stacks, char flag);
+
+int		get_size(t_stack_pair *stacks, int flag);
+int		get_stack(t_stack_pair *stacks, int flag, int offset);
 
 void	fill_group(t_stack_pair *stacks, char flag, t_stack_group *group);
 void	pull_up_according_med(t_stack_pair *stacks, char flag, int median);

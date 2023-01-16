@@ -86,12 +86,3 @@ void	reverse_rotate(t_stack_pair *stacks, char flag)
 		write(STDOUT_FILENO,
 			(char []){'r', 'r', (char []){'a', 'b', 'r'}[flag - 1], '\n'}, 4);
 }
-
-int	get_first(t_stack_pair *stacks, char flag)
-{
-	if (flag & STACK_A)
-		return (stacks->tab[stacks->len_a -1]);
-	if (flag & STACK_B)
-		return (stacks->tab[stacks->len_a]);
-	return (0);
-}

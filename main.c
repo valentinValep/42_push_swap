@@ -89,181 +89,69 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 	pull_up_according_med(stacks, flag, median);
 }
 
-int	get(t_stack_pair *stacks, int flag, int rank)
+int	get_sorted_end_count(t_stack_pair *stacks, int flag)
 {
-	if (flag == STACK_A)
-		return (stacks->tab[stacks->len_a - 1 - rank]);
-	if (flag == STACK_B)
-		return (stacks->tab[stacks->len_a + rank]);
+	int	i;
+
+	i = 0;
+	while (get_stack(stacks, flag, -i -1)
+		== get_stack(stacks, flag, -i -2) + (flag == STACK_A) * 2 - 1)
+		i++;
+	if (get_stack(stacks, flag, -i -1) == (stacks->size -1) * (flag == STACK_B))
+		return (i + 1);
 	return (0);
 }
 
-void	sort_3len_stack_a(t_stack_pair *stacks, int flag)
+void	sort_stack(t_stack_pair *stacks, int flag)
 {
-	if (flag == STACK_A)
+	int	count;
+
+	count = get_size(stacks, flag) - get_sorted_end_count(stacks, flag);
+	printf("count<%d>\n", count);
+	while (count > 0)
 	{
-		// 0 1 2
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-			return ; // ok
-		// 0 2 1
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-		{
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			return ; // p s pi
-		}
-		// 1 2 0
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
-		{
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			swap(stacks, flag);
-			return ; // p s pi s
-		}
-		// 1 0 2
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-		{
-			swap(stacks, flag);
-			return ; // s
-		}
-		// 2 1 0
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
+		if (!get_stack(stacks, STACK_A, 0) || (get_stack(stacks, STACK_A, 0)
+				== get_stack(stacks, STACK_A, -1) + 1
+				&& get_sorted_end_count(stacks, STACK_A)))
+			rotate(stacks, STACK_A);
+		else
 		{
 			push(stacks, STACK_B);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			swap(stacks, STACK_B);
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, flag);
-			return ; // p s p si pi s pi
+			while (get_size(stacks, STACK_B) > 1 && (get_stack(stacks, STACK_B, 0)
+					== stacks->size -1 || ((get_stack(stacks, STACK_B, 0)
+							== get_stack(stacks, STACK_B, -1) - 1)
+						&& get_sorted_end_count(stacks, STACK_B))))
+				rotate(stacks, STACK_B);
 		}
-		// 2 0 1
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
-		{
-			swap(stacks, flag);
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			return ; // s p s pi
-		}
+		count--;
 	}
-}
-
-void	sort_3len_stack_b(t_stack_pair *stacks, int flag)
-{
-	if (flag == STACK_A)
-	{
-		// 2 1 0
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
-			return ; // ok
-		// 2 0 1
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
-		{
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			return ; // p s pi
-		}
-		// 1 2 0
-		if (get(stacks, flag, 0) > get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-		{
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			swap(stacks, flag);
-			return ; // p s pi s
-		}
-		// 1 0 2
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) > get(stacks, flag, 2))
-		{
-			swap(stacks, flag);
-			return ; // s
-		}
-		// 2 1 0
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) < get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-		{
-			push(stacks, STACK_B);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			swap(stacks, STACK_B);
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, flag);
-			return ; // p s p si pi s pi
-		}
-		// 2 0 1
-		if (get(stacks, flag, 0) < get(stacks, flag, 1) && get(stacks, flag, 1) > get(stacks, flag, 2) && get(stacks, flag, 0) < get(stacks, flag, 2))
-		{
-			swap(stacks, flag);
-			push(stacks, flag);
-			swap(stacks, flag);
-			push(stacks, STACK_B);
-			return ; // s p s pi
-		}
-	}
-}
-
-void	sort_little_stack(t_stack_pair *stacks, int flag, int count)
-{
-	if (count == 1)
-		return ;
-	if (count == 2)
-	{
-		if (flag == STACK_A)
-			if (stacks->tab[stacks->len_a - 1] > stacks->tab[stacks->len_a - 2])
-				swap(stacks, flag);
-		if (flag == STACK_B)
-			if (stacks->tab[stacks->len_a] < stacks->tab[stacks->len_a + 1])
-				swap(stacks, flag);
-	}
-	if (count == 3)
-	{
-		if (flag == STACK_A)
-			sort_3len_stack_a(stacks, flag);
-		else if (flag == STACK_B)
-			sort_3len_stack_b(stacks, flag);
-	}
-}
-
-int	get_precedent_count(int base_count, int current_count)
-{
-	while (base_count / 2 > current_count)
-		base_count /= 2;
-	return (base_count);
-}
-
-void	sort_stack(t_stack_pair *stacks, int flag, int count)
-{
-	int	current_count;
-
-	current_count = count;
-	while (current_count > 3)
-	{
-		push_median(stacks, flag, current_count);
-		print_stacks(stacks);
-		current_count /= 2;
-	}
-	sort_little_stack(stacks, flag, current_count);
-	print_stacks(stacks);
-
-	//current_count = get_precedent_count(count, current_count);
-	//if (current_count == count)
-	//printf("current_count<%d>\n", current_count);
-
-	// faire que le tri push en meme temps
-	if (current_count != count)
-		sort_stack(stacks, (flag == 1) + 1, count - current_count);
-	while (current_count < count)
-	{
-		push(stacks, flag);
-		current_count++;
-	}
+	if (get_sorted_end_count(stacks, STACK_A) != stacks->size)
+		sort_stack(stacks, (flag == STACK_A) + 1);
 }
 
 /* --------------------------------------------- */
+
+int	*get_stack_as_rank(t_stack_pair *stacks)
+{
+	int	*res;
+	int	i;
+	int	j;
+	int	count;
+
+	res = malloc(stacks->size * sizeof(int));
+	if (!res)
+		return (NULL);
+	i = -1;
+	while (++i < stacks->size)
+	{
+		count = 0;
+		j = -1;
+		while (++j < stacks->size)
+			count += stacks->tab[j] < stacks->tab[i];
+		res[i] = count;
+	}
+	return (res);
+}
 
 int	main(int argc, char **argv)
 {
@@ -278,9 +166,13 @@ int	main(int argc, char **argv)
 	i = -1;
 	while (++i < stacks.size)
 		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
+	// @TODO verify parsing
+	stacks.tab = get_stack_as_rank(&stacks);
+	if (!stacks.tab)
+		return (1);
 	// @TODO rm print_stacks
 	print_stacks(&stacks);
-	sort_stack(&stacks, STACK_A, stacks.len_a);
+	sort_stack(&stacks, STACK_A);
 	print_stacks(&stacks);
 	// @TODO rm print_stacks
 	free(stacks.tab);
