@@ -177,10 +177,12 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 	int			i;
 	int			rotate_count;
 	int			pushed_count;
+	int			is_totally_unsort;
 
 	i = -1;
 	rotate_count = 0;
 	pushed_count = 0;
+	is_totally_unsort = count != get_size(stacks, flag);
 	while (++i < count && pushed_count < count / 2 + count % 2)
 	{
 		if (is_upper(flag, get_stack(stacks, flag, 0), median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
@@ -191,7 +193,7 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 		else
 		{
 			rotate(stacks, flag);
-			rotate_count++;
+			rotate_count += is_totally_unsort;
 		}
 	}
 	while (rotate_count--)
