@@ -77,18 +77,6 @@ int	get_median(int tab[], int size)
 	return (res);
 }
 
-// function which push every int of a stack bellow median to the other stack
-void	push_median(t_stack_pair *stacks, int flag, int count)
-{
-	t_stack_group	group;
-	int				median;
-
-	group.size = count;
-	fill_group(stacks, flag, &group);
-	median = get_median(group.tab, group.size);
-	pull_up_according_med(stacks, flag, median);
-}
-
 int	is_final_ceil(t_stack_pair *stacks, int flag, int n)
 {
 	return (n == (stacks->size -1) * (flag == STACK_B));
@@ -144,13 +132,97 @@ void	sort_stack(t_stack_pair *stacks, int flag)
 		sort_stack(stacks, flag);
 }
 
+/* ---------------------NEW----------------------- */
+
+int	is_upper(int flag, int a, int b)
+{
+	if (flag == STACK_A)
+		return (a < b);
+	return (a > b);
+}
+
+int	get_min(t_stack_pair *stacks, int flag, int count)
+{
+	int	i;
+	int	min;
+
+	i = 0;
+	min = get_stack(stacks, flag, i);
+	while (++i < count)
+	{
+		if (min > get_stack(stacks, flag, i))
+			min = get_stack(stacks, flag, i);
+	}
+	return (min);
+}
+
+int	get_max(t_stack_pair *stacks, int flag, int count)
+{
+	int	i;
+	int	max;
+
+	i = 0;
+	max = get_stack(stacks, flag, i);
+	while (++i < count)
+	{
+		if (max < get_stack(stacks, flag, i))
+			max = get_stack(stacks, flag, i);
+	}
+	return (max);
+}
+
+void	push_median(t_stack_pair *stacks, int flag, int count)
+{
+	int const	median = (get_max(stacks, flag, count) - get_min(stacks, flag, count)) / 2 + get_min(stacks, flag, count);
+	int			i;
+	int			rotate_count;
+	int			pushed_count;
+
+	i = -1;
+	rotate_count = 0;
+	pushed_count = 0;
+	while (++i < count && pushed_count < count / 2 + count % 2)
+	{
+		if (is_upper(flag, get_stack(stacks, flag, 0), median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
+		{
+			push(stacks, (flag == STACK_A) + 1);
+			pushed_count++;
+		}
+		else
+		{
+			rotate(stacks, flag);
+			rotate_count++;
+		}
+	}
+	while (rotate_count--)
+		reverse_rotate(stacks, flag);
+}
+
+void	sort_median(t_stack_pair *stacks, int flag, int count)
+{
+	if (count <= 2)
+	{
+		if (count == 2)
+			if (is_upper(flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0)))
+				swap(stacks, flag);
+		return ;
+	}
+	push_median(stacks, flag, count);
+	sort_median(stacks, flag, count / 2);
+	sort_median(stacks, (flag == STACK_A) + 1, count / 2 + count % 2);
+	count = count / 2 + count % 2;
+	while (count--)
+		push(stacks, flag);
+}
+
 void	sort(t_stack_pair *stacks)
 {
-	sort_stack(stacks, STACK_A);
-	while (get_size(stacks, STACK_B))
-		push(stacks, STACK_A);
-	while (get_sorted_end_count(stacks, STACK_A) != stacks->size)
-		rotate(stacks, STACK_A);
+	sort_median(stacks, STACK_A, stacks->len_a);
+	//sort_stack(stacks, STACK_A);
+	//while (get_size(stacks, STACK_B))
+	//	push(stacks, STACK_A);
+	//while (get_sorted_end_count(stacks, STACK_A) != stacks->size)
+	//	rotate(stacks, STACK_A);
 }
 
 /* --------------------------------------------- */

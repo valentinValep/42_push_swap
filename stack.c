@@ -2,7 +2,7 @@
 #include "push_swap.h"
 // @TODO rm bellow includes
 #include <stdio.h>
-void	swap(t_stack_pair *stacks, char flag)
+void	swap(t_stack_pair *stacks, int flag)
 {
 	if (flag & STACK_A)
 	{
@@ -22,7 +22,7 @@ void	swap(t_stack_pair *stacks, char flag)
 			(char []){'s', (char []){'a', 'b', 's'}[flag - 1], '\n'}, 3);
 }
 
-void	push(t_stack_pair *stacks, char flag)
+void	push(t_stack_pair *stacks, int flag)
 {
 	stacks->len_a += (
 			(flag < 3
@@ -33,7 +33,7 @@ void	push(t_stack_pair *stacks, char flag)
 		write(STDOUT_FILENO, (char []){'p', 'a' + flag - 1, '\n'}, 3);
 }
 
-void	rotate(t_stack_pair *stacks, char flag)
+void	rotate(t_stack_pair *stacks, int flag)
 {
 	int	tmp;
 
@@ -60,7 +60,7 @@ void	rotate(t_stack_pair *stacks, char flag)
 			(char []){'r', (char []){'a', 'b', 'r'}[flag - 1], '\n'}, 3);
 }
 
-void	reverse_rotate(t_stack_pair *stacks, char flag)
+void	reverse_rotate(t_stack_pair *stacks, int flag)
 {
 	int	tmp;
 

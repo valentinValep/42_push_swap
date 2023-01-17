@@ -20,23 +20,14 @@ typedef struct s_stack_pair {
 	int		len_a;
 }	t_stack_pair;
 
-typedef struct s_stack_group
-{
-	int	*tab;
-	int	size;
-}	t_stack_group;
-
 void	print_stacks(t_stack_pair *stacks);
 
-void	swap(t_stack_pair *stacks, char flag);
-void	push(t_stack_pair *stacks, char flag);
-void	rotate(t_stack_pair *stacks, char flag);
-void	reverse_rotate(t_stack_pair *stacks, char flag);
+void	swap(t_stack_pair *stacks, int flag);
+void	push(t_stack_pair *stacks, int flag);
+void	rotate(t_stack_pair *stacks, int flag);
+void	reverse_rotate(t_stack_pair *stacks, int flag);
 
 int		get_size(t_stack_pair *stacks, int flag);
 int		get_stack(t_stack_pair *stacks, int flag, int offset);
-
-void	fill_group(t_stack_pair *stacks, char flag, t_stack_group *group);
-void	pull_up_according_med(t_stack_pair *stacks, char flag, int median);
 
 #endif
