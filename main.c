@@ -105,13 +105,50 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 		reverse_rotate(stacks, flag);
 }
 
+void	sort_len_3(t_stack_pair *stacks, int flag)
+{
+	int	tab[3];
+
+	tab[0] = is_upper(
+			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 1))
+		+ is_upper(
+			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 2));
+	tab[1] = is_upper(
+			flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0))
+		+ is_upper(
+				flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 2));
+	tab[2] = is_upper(
+			flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 0))
+		+ is_upper(
+				flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 1));
+	if (tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
+		swap((ft_swap(tab, tab + 1), stacks), flag);
+	if (tab[0] == 1 && tab[1] == 0 && tab[2] == 2)
+	{
+		rotate(stacks, flag);
+		swap((ft_swap(tab + 1, tab + 2), stacks), flag);
+		reverse_rotate(stacks, flag);
+	}
+	if ((tab[0] == 1 && tab[1] == 2 && tab[2] == 0)
+		|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
+		swap((ft_swap(tab, tab + 1), stacks), flag);
+	if (tab[0] == 2 && tab[1] == 0 && tab[2] == 1)
+	{
+		rotate(stacks, flag);
+		swap(stacks, flag);
+		reverse_rotate(stacks, flag);
+	}
+}
+
 void	sort(t_stack_pair *stacks, int flag, int count)
 {
-	if (count <= 2)
+	if (count <= 3)
 	{
 		if (count == 2)
 			if (is_upper(flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0)))
 				swap(stacks, flag);
+		if (count == 3)
+			sort_len_3(stacks, flag);
 		return ;
 	}
 	push_median(stacks, flag, count);
