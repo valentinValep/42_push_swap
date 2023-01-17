@@ -140,8 +140,24 @@ void	sort_len_3(t_stack_pair *stacks, int flag)
 	}
 }
 
+int	is_sort(t_stack_pair *stacks, int flag, int count)
+{
+	int	i;
+
+	i = -1;
+	while (++i < count - 1)
+	{
+		if (is_upper(flag, get_stack(stacks, flag, i + 1),
+				get_stack(stacks, flag, i)))
+			return (0);
+	}
+	return (1);
+}
+
 void	sort(t_stack_pair *stacks, int flag, int count)
 {
+	if (is_sort(stacks, flag, count))
+		return ;
 	if (count <= 3)
 	{
 		if (count == 2)
