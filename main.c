@@ -118,7 +118,7 @@ void	sort_stack(t_stack_pair *stacks, int flag)
 	int	count;
 
 	count = get_size(stacks, flag) - get_sorted_end_count(stacks, flag);
-	printf("count<%d>\n", count);
+	//printf("count<%d>\n", count);
 	while (count > 0)
 	{
 		if (is_final_ceil(stacks, flag, get_stack(stacks, flag, 0))
@@ -138,7 +138,7 @@ void	sort_stack(t_stack_pair *stacks, int flag)
 		}
 		count--;
 	}
-	print_stacks(stacks);
+	//print_stacks(stacks);
 	flag = (flag == STACK_A) + 1;
 	if (get_sorted_end_count(stacks, flag) != get_size(stacks, flag))
 		sort_stack(stacks, flag);
@@ -154,6 +154,19 @@ void	sort(t_stack_pair *stacks)
 }
 
 /* --------------------------------------------- */
+
+int	is_in(int *array, int size, int n)
+{
+	int	i;
+
+	i = -1;
+	while (++i < size)
+	{
+		if (array[i] == n)
+			return (1);
+	}
+	return (0);
+}
 
 int	*get_stack_as_rank(t_stack_pair *stacks)
 {
@@ -173,6 +186,8 @@ int	*get_stack_as_rank(t_stack_pair *stacks)
 		while (++j < stacks->size)
 			count += stacks->tab[j] < stacks->tab[i];
 		res[i] = count;
+		if (i > 0 && is_in(res, i -1, count))
+			return ((free(res), NULL));
 	}
 	return (res);
 }
@@ -195,9 +210,9 @@ int	main(int argc, char **argv)
 	if (!stacks.tab)
 		return (1);
 	// @TODO rm print_stacks
-	print_stacks(&stacks);
+	//print_stacks(&stacks);
 	sort(&stacks);
-	print_stacks(&stacks);
+	//print_stacks(&stacks);
 	// @TODO rm print_stacks
 	free(stacks.tab);
 	return (0);
