@@ -93,6 +93,7 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 		if (is_upper(flag, get_stack(stacks, flag, 0), median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
 		{
 			push(stacks, (flag == STACK_A) + 1);
+			// @TODO if (unlink sort like : [7 1 9 2 3 8 0 4] -> 1 2 3 4) -> like shaker ;)
 			pushed_count++;
 		}
 		else
@@ -167,7 +168,7 @@ void	sort(t_stack_pair *stacks, int flag, int count)
 			sort_len_3(stacks, flag);
 		return ;
 	}
-	push_median(stacks, flag, count);
+	push_median(stacks, flag, count); // @TODO expend to different size of group ?
 	sort(stacks, flag, count / 2);
 	sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2);
 	count = count / 2 + count % 2;
