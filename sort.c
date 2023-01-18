@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include "push_swap.h"
 
 void	push_median(t_stack_pair *st, int flag, int count, t_printer *printer)
