@@ -21,9 +21,6 @@ typedef struct s_stack_pair {
 	int		len_a;
 }	t_stack_pair;
 
-// @TODO rm
-void	print_stacks(t_stack_pair *stacks);
-
 void	swap(t_stack_pair *stacks, int flag, t_printer *printer);
 void	push(t_stack_pair *stacks, int flag, t_printer *printer);
 void	rotate(t_stack_pair *stacks, int flag, t_printer *printer);
@@ -31,5 +28,10 @@ void	reverse_rotate(t_stack_pair *stacks, int flag, t_printer *printer);
 
 int		get_size(t_stack_pair *stacks, int flag);
 int		get_stack(t_stack_pair *stacks, int flag, int offset);
+int		is_upper(int flag, int a, int b);
+int		get_min(t_stack_pair *stacks, int flag, int count);
+int		get_max(t_stack_pair *stacks, int flag, int count);
+
+void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer);
 
 #endif

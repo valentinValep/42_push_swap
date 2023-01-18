@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include "push_swap.h"
-// @TODO rm bellow includes
-#include <stdio.h>
+
 void	swap(t_stack_pair *stacks, int flag, t_printer *printer)
 {
 	if (flag & STACK_A)

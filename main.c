@@ -1,192 +1,7 @@
-#include <stdlib.h>
-#include <unistd.h>
 #include "push_swap.h"
-// @TODO RM bellow include
-#include <stdio.h>
-// @TODO Moulinette
-// @TODO RM
-void	print_stacks(t_stack_pair *stacks)
-{
-	int			i;
-	int			space_count;
-	const int	max_len = (int []){stacks->len_a, stacks->size - stacks->len_a}
-	[stacks->len_a < stacks->size - stacks->len_a];
+#include <stdlib.h>
 
-	// print tab
-	i = -1;
-	while (++i < stacks->size - 1)
-	{
-		printf("%d_", stacks->tab[i]);
-	}
-	printf("%d -> size<%d> len_a<%d>\n", stacks->tab[i], stacks->size, stacks->len_a);
-	//
-	i = max_len - 1;
-	printf("A            B\n");
-	while (i >= 0)
-	{
-		if (i < stacks->len_a)
-			printf("%d", stacks->tab[i]);
-		else
-			printf(" ");
-		space_count = -1;
-		while (++space_count < 13 - ft_int_count(stacks->tab[i]))
-			printf(" ");
-		if (i < stacks->size - stacks->len_a)
-			printf("%d", stacks->tab[stacks->size - 1 - i]);
-		printf("\n");
-		i--;
-	}
-	write(STDOUT_FILENO, "----------------\n", 18);
-}
-
-int	is_upper(int flag, int a, int b)
-{
-	if (flag == STACK_A)
-		return (a < b);
-	return (a > b);
-}
-
-int	get_min(t_stack_pair *stacks, int flag, int count)
-{
-	int	i;
-	int	min;
-
-	i = 0;
-	min = get_stack(stacks, flag, i);
-	while (++i < count)
-	{
-		if (min > get_stack(stacks, flag, i))
-			min = get_stack(stacks, flag, i);
-	}
-	return (min);
-}
-
-int	get_max(t_stack_pair *stacks, int flag, int count)
-{
-	int	i;
-	int	max;
-
-	i = 0;
-	max = get_stack(stacks, flag, i);
-	while (++i < count)
-	{
-		if (max < get_stack(stacks, flag, i))
-			max = get_stack(stacks, flag, i);
-	}
-	return (max);
-}
-
-void	push_median(t_stack_pair *stacks, int flag, int count, t_printer *printer)
-{
-	int const	median = (get_max(stacks, flag, count) - get_min(stacks, flag, count)) / 2 + get_min(stacks, flag, count);
-	int			i;
-	int			rotate_count;
-	int			pushed_count;
-	int			is_totally_unsort;
-
-	i = -1;
-	rotate_count = 0;
-	pushed_count = 0;
-	is_totally_unsort = count != get_size(stacks, flag);
-	while (++i < count && pushed_count < count / 2 + count % 2)
-	{
-		if (is_upper(flag, get_stack(stacks, flag, 0), median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
-		{
-			push(stacks, (flag == STACK_A) + 1, printer);
-			// @TODO if (unlink sort like : [7 1 9 2 3 8 0 4] -> 1 2 3 4) -> like shaker ;)
-			pushed_count++;
-		}
-		else
-		{
-			rotate(stacks, flag, printer);
-			rotate_count += is_totally_unsort;
-		}
-	}
-	while (rotate_count--)
-		reverse_rotate(stacks, flag, printer);
-}
-
-void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
-{
-	int	tab[3];
-
-	tab[0] = is_upper(
-			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 1))
-		+ is_upper(
-			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 2));
-	tab[1] = is_upper(
-			flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0))
-		+ is_upper(
-				flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 2));
-	tab[2] = is_upper(
-			flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 0))
-		+ is_upper(
-				flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 1));
-	if (tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
-		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
-	if (tab[0] == 1 && tab[1] == 0 && tab[2] == 2)
-	{
-		rotate(stacks, flag, printer);
-		swap((ft_swap(tab + 1, tab + 2), stacks), flag, printer);
-		reverse_rotate(stacks, flag, printer);
-	}
-	if ((tab[0] == 1 && tab[1] == 2 && tab[2] == 0)
-		|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
-		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
-	if (tab[0] == 2 && tab[1] == 0 && tab[2] == 1)
-	{
-		rotate(stacks, flag, printer);
-		swap(stacks, flag, printer);
-		reverse_rotate(stacks, flag, printer);
-	}
-}
-
-int	is_sort(t_stack_pair *stacks, int flag, int count)
-{
-	int	i;
-
-	i = -1;
-	while (++i < count - 1)
-	{
-		if (is_upper(flag, get_stack(stacks, flag, i + 1),
-				get_stack(stacks, flag, i)))
-			return (0);
-	}
-	return (1);
-}
-
-void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
-{
-	if (is_sort(stacks, flag, count))
-		return ;
-	if (count <= 3)
-	{
-		if (count == 2)
-			if (is_upper(flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0)))
-				swap(stacks, flag, printer);
-		if (count == 3)
-			sort_len_3(stacks, flag, printer);
-		return ;
-	}
-	push_median(stacks, flag, count, printer); // @TODO expend to different size of group ?
-	if (flag == STACK_A)
-	{
-		sort(stacks, flag, count / 2, printer);
-		sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
-	}
-	else
-	{
-		sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
-		sort(stacks, flag, count / 2, printer);
-	}
-	count = count / 2 + count % 2;
-	while (count--)
-		push(stacks, flag, printer);
-}
-
-/* --------------------------------------------- */
-
-int	is_in(int *array, int size, int n)
+int	has(int *array, int size, int n)
 {
 	int	i;
 
@@ -217,7 +32,7 @@ int	*get_stack_as_rank(t_stack_pair *stacks)
 		while (++j < stacks->size)
 			count += stacks->tab[j] < stacks->tab[i];
 		res[i] = count;
-		if (i > 0 && is_in(res, i -1, count))
+		if (i > 0 && has(res, i -1, count))
 			return ((free(res), NULL));
 	}
 	return (res);
@@ -238,18 +53,13 @@ int	main(int argc, char **argv)
 	i = -1;
 	while (++i < stacks.size)
 		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
-	// @TODO verify parsing
 	tmp = stacks.tab;
 	stacks.tab = get_stack_as_rank(&stacks);
 	free(tmp);
 	if (!stacks.tab)
 		return (1);
-	// @TODO rm print_stacks
-	//print_stacks(&stacks);
 	init_printer(&printer);
 	sort(&stacks, STACK_A, stacks.len_a, &printer);
-	//print_stacks(&stacks);
-	// @TODO rm print_stacks
 	free(stacks.tab);
 	print(&printer);
 	return (0);
