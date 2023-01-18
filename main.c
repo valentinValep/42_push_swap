@@ -76,7 +76,7 @@ int	get_max(t_stack_pair *stacks, int flag, int count)
 	return (max);
 }
 
-void	push_median(t_stack_pair *stacks, int flag, int count)
+void	push_median(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
 	int const	median = (get_max(stacks, flag, count) - get_min(stacks, flag, count)) / 2 + get_min(stacks, flag, count);
 	int			i;
@@ -92,21 +92,21 @@ void	push_median(t_stack_pair *stacks, int flag, int count)
 	{
 		if (is_upper(flag, get_stack(stacks, flag, 0), median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
 		{
-			push(stacks, (flag == STACK_A) + 1);
+			push(stacks, (flag == STACK_A) + 1, printer);
 			// @TODO if (unlink sort like : [7 1 9 2 3 8 0 4] -> 1 2 3 4) -> like shaker ;)
 			pushed_count++;
 		}
 		else
 		{
-			rotate(stacks, flag);
+			rotate(stacks, flag, printer);
 			rotate_count += is_totally_unsort;
 		}
 	}
 	while (rotate_count--)
-		reverse_rotate(stacks, flag);
+		reverse_rotate(stacks, flag, printer);
 }
 
-void	sort_len_3(t_stack_pair *stacks, int flag)
+void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
 {
 	int	tab[3];
 
@@ -123,21 +123,21 @@ void	sort_len_3(t_stack_pair *stacks, int flag)
 		+ is_upper(
 				flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 1));
 	if (tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
-		swap((ft_swap(tab, tab + 1), stacks), flag);
+		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
 	if (tab[0] == 1 && tab[1] == 0 && tab[2] == 2)
 	{
-		rotate(stacks, flag);
-		swap((ft_swap(tab + 1, tab + 2), stacks), flag);
-		reverse_rotate(stacks, flag);
+		rotate(stacks, flag, printer);
+		swap((ft_swap(tab + 1, tab + 2), stacks), flag, printer);
+		reverse_rotate(stacks, flag, printer);
 	}
 	if ((tab[0] == 1 && tab[1] == 2 && tab[2] == 0)
 		|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
-		swap((ft_swap(tab, tab + 1), stacks), flag);
+		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
 	if (tab[0] == 2 && tab[1] == 0 && tab[2] == 1)
 	{
-		rotate(stacks, flag);
-		swap(stacks, flag);
-		reverse_rotate(stacks, flag);
+		rotate(stacks, flag, printer);
+		swap(stacks, flag, printer);
+		reverse_rotate(stacks, flag, printer);
 	}
 }
 
@@ -155,7 +155,7 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	return (1);
 }
 
-void	sort(t_stack_pair *stacks, int flag, int count)
+void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
 	if (is_sort(stacks, flag, count))
 		return ;
@@ -163,17 +163,25 @@ void	sort(t_stack_pair *stacks, int flag, int count)
 	{
 		if (count == 2)
 			if (is_upper(flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0)))
-				swap(stacks, flag);
+				swap(stacks, flag, printer);
 		if (count == 3)
-			sort_len_3(stacks, flag);
+			sort_len_3(stacks, flag, printer);
 		return ;
 	}
-	push_median(stacks, flag, count); // @TODO expend to different size of group ?
-	sort(stacks, flag, count / 2);
-	sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2);
+	push_median(stacks, flag, count, printer); // @TODO expend to different size of group ?
+	if (flag == STACK_A)
+	{
+		sort(stacks, flag, count / 2, printer);
+		sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
+	}
+	else
+	{
+		sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
+		sort(stacks, flag, count / 2, printer);
+	}
 	count = count / 2 + count % 2;
 	while (count--)
-		push(stacks, flag);
+		push(stacks, flag, printer);
 }
 
 /* --------------------------------------------- */
@@ -218,7 +226,9 @@ int	*get_stack_as_rank(t_stack_pair *stacks)
 int	main(int argc, char **argv)
 {
 	t_stack_pair	stacks;
+	t_printer		printer;
 	int				i;
+	int				*tmp;
 
 	stacks.size = argc - 1;
 	stacks.len_a = stacks.size;
@@ -229,14 +239,18 @@ int	main(int argc, char **argv)
 	while (++i < stacks.size)
 		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
 	// @TODO verify parsing
+	tmp = stacks.tab;
 	stacks.tab = get_stack_as_rank(&stacks);
+	free(tmp);
 	if (!stacks.tab)
 		return (1);
 	// @TODO rm print_stacks
 	//print_stacks(&stacks);
-	sort(&stacks, STACK_A, stacks.len_a);
+	init_printer(&printer);
+	sort(&stacks, STACK_A, stacks.len_a, &printer);
 	//print_stacks(&stacks);
 	// @TODO rm print_stacks
 	free(stacks.tab);
+	print(&printer);
 	return (0);
 }
