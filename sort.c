@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-void	push_median(t_stack_pair *st, int flag, int count, t_printer *printer)
+void	split(t_stack_pair *st, int flag, int count, t_printer *printer)
 {
 	int const	median = (get_max(st, flag, count) - get_min(st, flag, count))
 		/ 2 + get_min(st, flag, count);
@@ -16,6 +16,8 @@ void	push_median(t_stack_pair *st, int flag, int count, t_printer *printer)
 	while (++i < count && pushed_count < count / 2 + count % 2)
 	{
 		if (is_upper(flag, get_stack(st, flag, 0),
+				//median + (flag == STACK_A && !(count % 2))
+				//- (flag == STACK_B && count % 2)))
 				median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
 		{
 			push(st, (flag == STACK_A) + 1, printer);
@@ -26,46 +28,6 @@ void	push_median(t_stack_pair *st, int flag, int count, t_printer *printer)
 	}
 	while (is_totally_unsort && rotate_count--)
 		reverse_rotate(st, flag, printer);
-}
-
-void	put_rank_len_3(t_stack_pair *stacks, int flag, int *res)
-{
-	res[0] = is_upper(
-			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 1))
-		+ is_upper(
-			flag, get_stack(stacks, flag, 0), get_stack(stacks, flag, 2));
-	res[1] = is_upper(
-			flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 0))
-		+ is_upper(
-			flag, get_stack(stacks, flag, 1), get_stack(stacks, flag, 2));
-	res[2] = is_upper(
-			flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 0))
-		+ is_upper(
-			flag, get_stack(stacks, flag, 2), get_stack(stacks, flag, 1));
-}
-
-void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
-{
-	int	tab[3];
-
-	put_rank_len_3(stacks, flag, tab);
-	if (tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
-		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
-	if (tab[0] == 1 && tab[1] == 0 && tab[2] == 2)
-	{
-		rotate(stacks, flag, printer);
-		swap((ft_swap(tab + 1, tab + 2), stacks), flag, printer);
-		reverse_rotate(stacks, flag, printer);
-	}
-	if ((tab[0] == 1 && tab[1] == 2 && tab[2] == 0)
-		|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
-		swap((ft_swap(tab, tab + 1), stacks), flag, printer);
-	if (tab[0] == 2 && tab[1] == 0 && tab[2] == 1)
-	{
-		rotate(stacks, flag, printer);
-		swap(stacks, flag, printer);
-		reverse_rotate(stacks, flag, printer);
-	}
 }
 
 int	is_sort(t_stack_pair *stacks, int flag, int count)
@@ -82,6 +44,7 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	return (1);
 }
 
+// @TODO add a brute force algorithm and compare it
 void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
 	if (is_sort(stacks, flag, count))
@@ -92,11 +55,11 @@ void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 			if (is_upper(flag, get_stack(stacks, flag, 1),
 					get_stack(stacks, flag, 0)))
 				swap(stacks, flag, printer);
-		if (count == 3)
+		if (count > 2)
 			sort_len_3(stacks, flag, printer);
 		return ;
 	}
-	push_median(stacks, flag, count, printer);
+	split(stacks, flag, count, printer);
 	if (flag == STACK_A)
 		sort(stacks, flag, count / 2, printer);
 	sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);

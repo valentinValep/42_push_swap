@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include "push_swap.h"
 
 void	swap(t_stack_pair *stacks, int flag, t_printer *printer)
@@ -16,9 +17,9 @@ void	swap(t_stack_pair *stacks, int flag, t_printer *printer)
 		ft_swap(stacks->tab + stacks->len_a,
 			stacks->tab + stacks->len_a +1);
 	}
-	if (PRINT_STACK_OPERATION)
-		add(printer,
-			(char []){'s', (char []){'a', 'b', 's'}[flag - 1], 0});
+	if (PRINT_STACK_OPERATION && add(printer,
+			(char []){'s', (char []){'a', 'b', 's'}[flag - 1], 0}))
+		exit((free(stacks->tab), 1));
 }
 
 void	push(t_stack_pair *stacks, int flag, t_printer *printer)
@@ -28,8 +29,9 @@ void	push(t_stack_pair *stacks, int flag, t_printer *printer)
 				&& !(flag == 1 && stacks->len_a == stacks->size)
 				&& !(flag == 2 && !stacks->len_a))
 			* ((flag + 1) % 3 -1));
-	if (PRINT_STACK_OPERATION)
-		add(printer, (char []){'p', 'a' + flag - 1, 0});
+	if (PRINT_STACK_OPERATION && add(printer,
+			(char []){'p', 'a' + flag - 1, 0}))
+		exit((free(stacks->tab), 1));
 }
 
 void	rotate(t_stack_pair *stacks, int flag, t_printer *printer)
@@ -54,9 +56,9 @@ void	rotate(t_stack_pair *stacks, int flag, t_printer *printer)
 			stacks->size - stacks->len_a - 1);
 		stacks->tab[stacks->size - 1] = tmp;
 	}
-	if (PRINT_STACK_OPERATION)
-		add(printer,
-			(char []){'r', (char []){'a', 'b', 'r'}[flag - 1], 0});
+	if (PRINT_STACK_OPERATION && add(printer,
+			(char []){'r', (char []){'a', 'b', 'r'}[flag - 1], 0}))
+		exit((free(stacks->tab), 1));
 }
 
 void	reverse_rotate(t_stack_pair *stacks, int flag, t_printer *printer)
@@ -81,7 +83,7 @@ void	reverse_rotate(t_stack_pair *stacks, int flag, t_printer *printer)
 			stacks->size - stacks->len_a -1);
 		stacks->tab[stacks->len_a] = tmp;
 	}
-	if (PRINT_STACK_OPERATION)
-		add(printer,
-			(char []){'r', 'r', (char []){'a', 'b', 'r'}[flag - 1], 0});
+	if (PRINT_STACK_OPERATION && add(printer,
+			(char []){'r', 'r', (char []){'a', 'b', 'r'}[flag - 1], 0}))
+		exit((free(stacks->tab), 1));
 }
