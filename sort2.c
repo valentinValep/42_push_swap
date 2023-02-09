@@ -17,28 +17,35 @@ void	put_rank_len_3(t_stack_pair *stacks, int flag, int *res)
 }
 
 __attribute__ ((always_inline))
-void	sort_len_3_little(
+int	sort_len_3_little(
 	t_stack_pair *stacks, int flag, t_printer *printer, int *rank)
 {
+	if (rank[0] == 2 && rank[1] == 0 && rank[2] == 1 && flag == STACK_B)
+	{
+		push(stacks, (flag == STACK_A) + 1, printer);
+		swap(stacks, flag, printer);
+		return (1);
+	}
 	if (rank[0] == 0 && rank[1] == 1 && rank[2] == 2)
-		swap((ft_swap(rank, rank + 1), stacks), flag, printer);
+		rotate((rank[0] = 1, rank[1] = 2, rank[2] = 0, stacks), flag, printer);
 	if (rank[0] == 2 && rank[1] == 0 && rank[2] == 1)
-		reverse_rotate(
-			(rank[0] = 1, rank[1] = 2, rank[2] = 0, stacks), flag, printer);
+		reverse_rotate(stacks, flag, printer);
 	if (rank[0] == 0 && rank[1] == 2 && rank[2] == 1)
 		rotate(stacks, flag, printer);
 	if (rank[0] == 1 && rank[1] == 0 && rank[2] == 2)
 		reverse_rotate(stacks, flag, printer);
-	if (rank[0] == 1 && rank[1] == 2 && rank[2] == 0)
+	if ((rank[0] == 1 && rank[1] == 2 && rank[2] == 0)
+		|| (rank[0] == 2 && rank[1] == 0 && rank[2] == 1))
 		swap(stacks, flag, printer);
+	return (0);
 }
 
-void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
+int	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
 {
 	int	tab[3];
 
 	put_rank_len_3(stacks, flag, tab);
-	if (get_size(stacks, flag) != 3)
+	if (get_size(stacks, flag) != 3 && flag == STACK_A)
 	{
 		if (tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
 			swap((ft_swap(tab, tab + 1), stacks), flag, printer);
@@ -57,9 +64,41 @@ void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer)
 			swap(stacks, flag, printer);
 			reverse_rotate(stacks, flag, printer);
 		}
+		return (0);
+	}
+	else if (get_size(stacks, flag) != 3 && flag == STACK_B)
+	{
+			if ((tab[0] == 0 && tab[1] == 1 && tab[2] == 2)
+			|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
+		{
+			rotate(stacks, flag, printer);
+			push(stacks, (flag == STACK_A) + 1, printer);
+			push(stacks, (flag == STACK_A) + 1, printer);
+			reverse_rotate(stacks, flag, printer);
+			return ((tab[0] == 0 && tab[1] == 1 && tab[2] == 2
+					&& (swap(stacks, (flag == STACK_A) + 1, printer), 0)) + 2);
+		}
+		if (tab[0] == 1 && tab[1] == 0 && tab[2] == 2)
+		{
+			push(stacks, (flag == STACK_A) + 1, printer);
+			swap(stacks, flag, printer);
+			push(stacks, (flag == STACK_A) + 1, printer);
+			swap(stacks, (flag == STACK_A) + 1, printer);
+			return (2);
+		}
+		if (tab[0] == 2 && tab[1] == 0 && tab[2] == 1)
+		{
+			push(stacks, (flag == STACK_A) + 1, printer);
+			swap(stacks, flag, printer);
+			return (1);
+		}
+		if ((tab[0] == 1 && tab[1] == 2 && tab[2] == 0)
+			|| (tab[0] == 0 && tab[1] == 2 && tab[2] == 1))
+			swap(stacks, flag, printer);
 	}
 	else
-		sort_len_3_little(stacks, flag, printer, tab);
+		return (sort_len_3_little(stacks, flag, printer, tab));
+	return (0);
 }
 
 //void	put_rank(t_stack_pair *stacks, int flag, int *res, int size)

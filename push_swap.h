@@ -32,7 +32,7 @@ int		is_upper(int flag, int a, int b);
 int		get_min(t_stack_pair *stacks, int flag, int count);
 int		get_max(t_stack_pair *stacks, int flag, int count);
 
-void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer);
-void	sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer);
+int		sort(t_stack_pair *stacks, int flag, int count, t_printer *printer);
+int		sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer);
 
 #endif

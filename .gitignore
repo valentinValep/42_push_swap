@@ -1,4 +1,6 @@
 .vscode
 checker_linux
+push_swap_visualizer_1
 push_swap_visualizer
 imgui.ini
+inputs.py

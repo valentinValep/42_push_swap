@@ -43,12 +43,14 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	}
 	return (1);
 }
-
+#include <stdio.h>
 // @TODO add a brute force algorithm and compare it
-void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
+int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
+	int	already_reinsert;
+
 	if (is_sort(stacks, flag, count))
-		return ;
+		return (0);
 	if (count <= 3)
 	{
 		if (count == 2)
@@ -56,16 +58,21 @@ void	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 					get_stack(stacks, flag, 0)))
 				swap(stacks, flag, printer);
 		if (count > 2)
-			sort_len_3(stacks, flag, printer);
-		return ;
+			return (sort_len_3(stacks, flag, printer));
+		return (0);
 	}
 	split(stacks, flag, count, printer);
 	if (flag == STACK_A)
 		sort(stacks, flag, count / 2, printer);
-	sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
+	already_reinsert = sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
 	if (flag == STACK_B)
-		sort(stacks, flag, count / 2, printer);
-	count = count / 2 + count % 2;
-	while (count--)
-		push(stacks, flag, printer);
+		already_reinsert = sort(stacks, flag, count / 2, printer);
+	if (flag == STACK_A)
+	{
+		already_reinsert = (count / 2 + count % 2 - already_reinsert);
+		while (already_reinsert-- > 0)
+			push(stacks, flag, printer);
+		return (0);
+	}
+	return (count / 2 + count % 2 + already_reinsert);
 }
