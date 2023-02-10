@@ -1,4 +1,5 @@
 #include "push_swap.h"
+#include <stdio.h> // @TODO rm
 
 void	split(t_stack_pair *st, int flag, int count, t_printer *printer)
 {
@@ -43,36 +44,86 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	}
 	return (1);
 }
-#include <stdio.h> // @TODO rm
-// possible @TODO add a brute force algorithm and compare it
-int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
+
+int	sort_a(t_stack_pair *stacks, int count, t_printer *printer)
 {
 	int	already_reinsert;
 
-	if (is_sort(stacks, flag, count))
+	if (is_sort(stacks, STACK_A, count))
 		return (0);
 	if (count <= 3)
 	{
 		if (count == 2)
-			if (is_upper(flag, get_stack(stacks, flag, 1),
-					get_stack(stacks, flag, 0)))
-				swap(stacks, flag, printer);
+			if (is_upper(STACK_A, get_stack(stacks, STACK_A, 1),
+					get_stack(stacks, STACK_A, 0)))
+				swap(stacks, STACK_A, printer);
 		if (count == 3)
-			return (sort_len_3(stacks, flag, printer));
+			return (sort_len_3(stacks, STACK_A, printer));
 		return (0);
 	}
-	split(stacks, flag, count, printer);
-	if (flag == STACK_A)
-		sort(stacks, flag, count / 2, printer);
-	already_reinsert = sort(stacks, (flag == STACK_A) + 1, count / 2 + count % 2, printer);
-	if (flag == STACK_B)
-		already_reinsert = sort(stacks, flag, count / 2, printer);
-	if (flag == STACK_A)
+	split(stacks, STACK_A, count, printer);
+	sort(stacks, STACK_A, count / 2, printer);
+	already_reinsert = sort(stacks, STACK_B, count / 2 + count % 2, printer);
+	already_reinsert = (count / 2 + count % 2 - already_reinsert);
+	while (already_reinsert-- > 0)
+		push(stacks, STACK_A, printer);
+	return (0);
+}
+
+void	go_to_b(t_stack_pair *stacks, int offset, t_printer *printer)
+{
+	int	i;
+
+	if (offset < stacks->size - stacks->len_a - offset)
+		i = 0;
+	else
+		i = stacks->size - stacks->len_a;
+	while (i < offset)
 	{
-		already_reinsert = (count / 2 + count % 2 - already_reinsert);
-		while (already_reinsert-- > 0)
-			push(stacks, flag, printer);
-		return (0);
+		rotate(stacks, STACK_B, printer);
+		i++;
 	}
+	while (i > offset)
+	{
+		reverse_rotate(stacks, STACK_B, printer);
+		i--;
+	}
+}
+
+void	insert_to_a(t_stack_pair *stacks, int count, t_printer *printer)
+{
+	int	next;
+
+	while (count > 0)
+	{
+		next = get_max_offset(stacks, STACK_B);
+		go_to_b(stacks, next, printer);
+		push(stacks, STACK_A, printer);
+		count--;
+	}
+}
+
+// possible @TODO add a brute force algorithm and compare it
+int	sort_b(t_stack_pair *stacks, int count, t_printer *printer)
+{
+	int	already_reinsert;
+
+	if (is_sort(stacks, STACK_B, count))
+		return (0);
+	if (count <= 10)
+	{
+		insert_to_a(stacks, count, printer);
+		return (count);
+	}
+	split(stacks, STACK_B, count, printer);
+	already_reinsert = sort(stacks, STACK_A, count / 2 + count % 2, printer);
+	already_reinsert = sort(stacks, STACK_B, count / 2, printer);
 	return (count / 2 + count % 2 + already_reinsert);
+}
+
+int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
+{
+	if (flag == STACK_A)
+		return (sort_a(stacks, count, printer));
+	return (sort_b(stacks, count, printer));
 }
