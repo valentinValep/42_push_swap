@@ -43,8 +43,8 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	}
 	return (1);
 }
-#include <stdio.h>
-// @TODO add a brute force algorithm and compare it
+#include <stdio.h> // @TODO rm
+// possible @TODO add a brute force algorithm and compare it
 int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
 	int	already_reinsert;
