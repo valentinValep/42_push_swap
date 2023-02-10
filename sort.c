@@ -1,4 +1,5 @@
 #include "push_swap.h"
+#include <stdio.h> // @TODO RM
 
 void	split(t_stack_pair *st, int flag, int count, t_printer *printer)
 {
@@ -43,12 +44,16 @@ int	is_sort(t_stack_pair *stacks, int flag, int count)
 	}
 	return (1);
 }
-#include <stdio.h>
-// @TODO add a brute force algorithm and compare it
+// Optionnally @TODO add a brute force algorithm and compare it
 int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 {
 	int	already_reinsert;
 
+	// @TODO EXPERIMENTAL
+	printf("%d\n", switch_test_mode(printer));
+	push(stacks, STACK_A, printer);
+	printf("%d\n", switch_test_mode(printer));
+	// END EXPERIMENTAL
 	if (is_sort(stacks, flag, count))
 		return (0);
 	if (count <= 3)

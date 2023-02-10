@@ -46,6 +46,7 @@ void	init_printer(t_printer *printer)
 	printer->msize = 0;
 	printer->printer = NULL;
 	printer->len = 0;
+	printer->test_start = -1;
 }
 
 int	print(t_printer *printer)

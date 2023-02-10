@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/01/20 10:50:45 by vlepille         ###   ########.fr        #
+#    Updated: 2023/02/09 16:47:22 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,9 @@ SRC = stack.c \
 	utils.c \
 	main.c \
 	stack_utils.c \
-	printer2.c \
 	printer.c \
+	printer2.c \
+	printer3.c \
 	sort.c \
 	sort2.c \
 
@@ -33,6 +34,7 @@ OBJ = stack.o \
 	stack_utils.o \
 	printer.o \
 	printer2.o \
+	printer3.o \
 	sort.o \
 	sort2.o \
 

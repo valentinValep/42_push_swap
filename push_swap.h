@@ -35,4 +35,6 @@ int		get_max(t_stack_pair *stacks, int flag, int count);
 int		sort(t_stack_pair *stacks, int flag, int count, t_printer *printer);
 int		sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer);
 
+int		switch_test_mode(t_stack_pair *stacks, t_printer *printer);
+
 #endif
