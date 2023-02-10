@@ -57,7 +57,7 @@ int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
 			if (is_upper(flag, get_stack(stacks, flag, 1),
 					get_stack(stacks, flag, 0)))
 				swap(stacks, flag, printer);
-		if (count > 2)
+		if (count == 3)
 			return (sort_len_3(stacks, flag, printer));
 		return (0);
 	}
