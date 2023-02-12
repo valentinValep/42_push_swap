@@ -103,22 +103,31 @@ void	insert_to_a(t_stack_pair *stacks, int count, t_printer *printer)
 	}
 }
 
-// possible @TODO add a brute force algorithm and compare it
-int	sort_b(t_stack_pair *stacks, int count, t_printer *printer)
+int	insert_to_a_strategy(t_stack_pair *stacks, int count, t_printer *printer)
+{
+	insert_to_a(stacks, count, printer);
+	return (count);
+}
+
+int	split_strategy(t_stack_pair *stacks, int count, t_printer *printer)
 {
 	int	already_reinsert;
 
-	if (is_sort(stacks, STACK_B, count))
-		return (0);
-	if (count <= 10)
-	{
-		insert_to_a(stacks, count, printer);
-		return (count);
-	}
 	split(stacks, STACK_B, count, printer);
-	already_reinsert = sort(stacks, STACK_A, count / 2 + count % 2, printer);
+	sort(stacks, STACK_A, count / 2 + count % 2, printer);
 	already_reinsert = sort(stacks, STACK_B, count / 2, printer);
 	return (count / 2 + count % 2 + already_reinsert);
+}
+
+// optional @TODO add a brute force algorithm and compare it
+int	sort_b(t_stack_pair *stacks, int count, t_printer *printer)
+{
+	if (is_sort(stacks, STACK_B, count))
+		return (0);
+	if (simulate(stacks, count, insert_to_a_strategy)
+		< simulate(stacks, count, split_strategy))
+		return (insert_to_a_strategy(stacks, count, printer));
+	return (split_strategy(stacks, count, printer));
 }
 
 int	sort(t_stack_pair *stacks, int flag, int count, t_printer *printer)
