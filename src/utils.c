@@ -24,21 +24,23 @@ void	ft_swap(int *a, int *b)
 	*b = tmp;
 }
 
-int	ft_atoi(char *str)
+int	ft_atoi_borrow(char *start, int len, int *res)
 {
 	int	i;
-	int	res;
 	int	neg;
 
 	i = 0;
-	res = 0;
-	i += ((neg = str[i] == '-') || str[i] == '+');
-	while (str[i] >= '0' && str[i] <= '9')
+	*res = 0;
+	i += ((neg = start[i] == '-') || start[i] == '+');
+	while (start[i] >= '0' && start[i] <= '9')
 	{
-		res = res * 10 + str[i] - '0';
+		*res = (*res) * 10 + start[i] - '0';
 		i++;
 	}
-	return (res * (!neg - neg));
+	if (start[i] != 0)
+		return (-1);
+	*res = (*res) * (!neg - neg);
+	return (i != len);
 }
 
 void	*ft_intmove(int *dest, int *src, size_t size)

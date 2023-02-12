@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/02/12 15:49:24 by vlepille         ###   ########.fr        #
+#    Updated: 2023/02/12 18:23:26 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ OBJ = stack.o \
 	sort2.o \
 	stack_utils2.o \
 	simulation.o \
+	vector.o \
 
 OBJ := $(addprefix $(OBJECTS_DIR),$(OBJ))
 
@@ -41,9 +42,9 @@ $(NAME) : $(OBJ)
 
 $(OBJECTS_DIR) :
 	mkdir $(OBJECTS_DIR)
-
+# @TODO rm -g3
 $(OBJECTS_DIR)%.o : $(SOURCES_DIR)%.c | $(OBJECTS_DIR)
-	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@ -g3
 
 all : $(NAME)
 

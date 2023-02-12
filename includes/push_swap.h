@@ -12,7 +12,7 @@
 
 void	ft_swap(int *a, int *b);
 int		ft_int_count(int n);
-int		ft_atoi(char *str);
+int		ft_atoi_borrow(char *start, int len, int *res);
 void	*ft_intmove(int *dest, int *src, size_t size);
 
 typedef struct s_stack_pair {
