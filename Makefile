@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/02/12 14:54:34 by vlepille         ###   ########.fr        #
+#    Updated: 2023/02/12 15:49:24 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,18 +16,10 @@ CC = cc
 
 FLAGS = -Wall -Werror -Wextra
 
-INCLUDES = -I.
+INCLUDES = -Iincludes
 
-SRC = stack.c \
-	utils.c \
-	main.c \
-	stack_utils.c \
-	printer2.c \
-	printer.c \
-	sort.c \
-	sort2.c \
-	stack_utils2.c \
-	simulation.c \
+SOURCES_DIR = src/
+OBJECTS_DIR = build/
 
 OBJ = stack.o \
 	utils.o \
@@ -40,13 +32,18 @@ OBJ = stack.o \
 	stack_utils2.o \
 	simulation.o \
 
+OBJ := $(addprefix $(OBJECTS_DIR),$(OBJ))
+
 RM = rm -f
 
 $(NAME) : $(OBJ)
-	$(CC) -o $(NAME) $(OBJ)
-# @TODO RM -g3
-%.o : %.c push_swap.h
-	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@ -g3
+	$(CC) $(OBJ) -o $(NAME)
+
+$(OBJECTS_DIR) :
+	mkdir $(OBJECTS_DIR)
+
+$(OBJECTS_DIR)%.o : $(SOURCES_DIR)%.c | $(OBJECTS_DIR)
+	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 all : $(NAME)
 

@@ -17,8 +17,6 @@ void	split(t_stack_pair *st, int flag, int count, t_printer *printer)
 	while (++i < count && pushed_count < count / 2 + count % 2)
 	{
 		if (is_upper(flag, get_stack(st, flag, 0),
-				//median + (flag == STACK_A && !(count % 2))
-				//- (flag == STACK_B && count % 2)))
 				median + (flag == STACK_A) - (flag == STACK_B && count % 2)))
 		{
 			push(st, (flag == STACK_A) + 1, printer);
