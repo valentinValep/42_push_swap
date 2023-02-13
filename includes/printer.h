@@ -20,11 +20,12 @@ typedef struct s_printer
 	int		msize;
 }	t_printer;
 
-int		ft_upscale_printer(t_printer *printer, int size);
-void	delete(t_printer *printer);
+int		ft_upscale_printer(t_printer *printer, int size)
+		__attribute__ ((warn_unused_result));
 
 void	init_printer(t_printer *printer);
-int		add(t_printer *printer, char *str);
+void	delete(t_printer *printer);
+int		add(t_printer *printer, char *str) __attribute__ ((warn_unused_result));
 int		print(t_printer *printer);
 
 #endif

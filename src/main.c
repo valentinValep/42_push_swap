@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "vector.h"
 #include <stdlib.h>
 
 int	has(int *array, int size, int n)
@@ -54,17 +55,9 @@ int	main(int argc, char **argv)
 {
 	t_stack_pair	stacks;
 	t_printer		printer;
-	int				i;
 	int				*tmp;
 
-	stacks.size = argc - 1;
-	stacks.len_a = stacks.size;
-	stacks.tab = malloc((stacks.size) * sizeof(int));
-	if (!stacks.tab)
-		return (1);
-	i = -1;
-	while (++i < stacks.size)
-		stacks.tab[stacks.size - i - 1] = ft_atoi(argv[i + 1]);
+	parse(argc, argv, &stacks);
 	tmp = stacks.tab;
 	stacks.tab = get_stack_as_rank(&stacks);
 	free(tmp);
