@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/02/12 18:23:26 by vlepille         ###   ########.fr        #
+#    Updated: 2023/02/13 14:25:47 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ OBJ = stack.o \
 	stack_utils2.o \
 	simulation.o \
 	vector.o \
+	sort_b.o \
 
 OBJ := $(addprefix $(OBJECTS_DIR),$(OBJ))
 

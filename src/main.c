@@ -101,13 +101,13 @@ void	parse(int argc, char **argv, t_stack_pair *stacks)
 		word_start = 0;
 		while (!++j || argv[i][j - 1])
 		{
-			if (argv[i][j] == ' ' || !argv[i][j]) // @TODO verif with a '\t' in bash if it's ok
+			if (argv[i][j] == ' ' || !argv[i][j])
 			{
 				if (word_start != j)
 				{
 					if (ft_atoi_borrow(
 							argv[i] + word_start, j - word_start,
-							&current_num) || add_vector(&vector, current_num)) // @TODO problem for "5 3 4"
+							&current_num) || add_vector(&vector, current_num))
 						error(&vector);
 				}
 				word_start = j + 1;
