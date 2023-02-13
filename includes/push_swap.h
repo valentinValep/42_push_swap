@@ -33,6 +33,8 @@ int		get_min(t_stack_pair *stacks, int flag, int count);
 int		get_max(t_stack_pair *stacks, int flag, int count);
 int		get_max_offset(t_stack_pair *stacks, int flag);
 
+void	parse(int argc, char **argv, t_stack_pair *stacks);
+
 void	split(t_stack_pair *st, int flag, int count, t_printer *printer);
 int	is_sort(t_stack_pair *stacks, int flag, int count);
 int		sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer);
