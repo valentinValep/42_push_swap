@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stddef.h>
+#include <limits.h>
 #include "push_swap.h"
 
 int	ft_int_count(int n)
@@ -34,10 +35,13 @@ int	ft_atoi_borrow(char *start, int len, int *res)
 	i += ((neg = start[i] == '-') || start[i] == '+');
 	while (start[i] >= '0' && start[i] <= '9')
 	{
+		if (((long)*res) * 10 + start[i] - '0' > (long)INT_MAX + neg)
+			return (-2);
 		*res = (*res) * 10 + start[i] - '0';
 		i++;
 	}
-	if (start[i] != 0)
+	if ((start[i] != 0 && start[i] != ' ')
+		|| (start[i -1] == '-' || start[i -1] == '+'))
 		return (-1);
 	*res = (*res) * (!neg - neg);
 	return (i != len);

@@ -63,6 +63,26 @@ int	*reverse(int *tab, int len)
 	return (res);
 }
 
+int	check_double(t_vector const *vector)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < vector->len - 1)
+	{
+		j = i + 1;
+		while (j < vector->len)
+		{
+			if (vector->tab[i] == vector->tab[j])
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	parse(int argc, char **argv, t_stack_pair *stacks)
 {
 	int			i;
@@ -75,6 +95,8 @@ void	parse(int argc, char **argv, t_stack_pair *stacks)
 	i = 0;
 	while (++i < argc)
 	{
+		if (!argv[i][0])
+			error(&vector);
 		j = -1;
 		word_start = 0;
 		while (!++j || argv[i][j - 1])
@@ -85,13 +107,15 @@ void	parse(int argc, char **argv, t_stack_pair *stacks)
 				{
 					if (ft_atoi_borrow(
 							argv[i] + word_start, j - word_start,
-							&current_num) || add_vector(&vector, current_num))
+							&current_num) || add_vector(&vector, current_num)) // @TODO problem for "5 3 4"
 						error(&vector);
 				}
-				word_start = j;
+				word_start = j + 1;
 			}
 		}
 	}
+	if (!vector.len || check_double(&vector))
+		error(&vector);
 	stacks->size = vector.len;
 	stacks->len_a = stacks->size;
 	stacks->tab = reverse(vector.tab, vector.len);
