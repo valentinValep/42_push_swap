@@ -58,20 +58,20 @@ int	check_double(t_vector const *vector)
 	return (0);
 }
 
-void	add_number_to_vec(t_vector *vector, char *word, int start, int end)
+void	add_number_to_vec(t_vector *vector, char *word, int *start, int end)
 {
 	int			current_num;
 
 	if (word[end] == ' ' || !word[end])
 	{
-		if (start != end)
+		if (*start != end)
 		{
 			if (ft_atoi_borrow(
-					word + start, end - start,
+					word + *start, end - *start,
 					&current_num) || add_vector(vector, current_num))
 				error(vector);
 		}
-		start = end + 1;
+		*start = end + 1;
 	}
 }
 
@@ -92,7 +92,7 @@ void	parse(int argc, char **argv, t_stack_pair *stacks)
 		word_start = 0;
 		while (!++j || argv[i][j - 1])
 		{
-			add_number_to_vec(&vector, argv[i], word_start, j);
+			add_number_to_vec(&vector, argv[i], &word_start, j);
 		}
 	}
 	if (!vector.len || check_double(&vector))
