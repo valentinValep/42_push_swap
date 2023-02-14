@@ -19,6 +19,10 @@
 # define STACK_A 1 // don't change
 # define STACK_B 2 // don't change
 # define STACKS_AB 3 // = STACK_A | STACK_B
+# define SWAP 4
+# define PUSH 8
+# define ROTATE 16
+# define REVERSE_ROTATE 32
 
 # define PRINT_STACK_OPERATION 1
 
@@ -45,10 +49,11 @@ int		get_min(t_stack_pair *stacks, int flag, int count);
 int		get_max(t_stack_pair *stacks, int flag, int count);
 int		get_max_offset(t_stack_pair *stacks, int flag);
 
+int		*get_stack_as_rank(t_stack_pair *stacks);
 void	parse(int argc, char **argv, t_stack_pair *stacks);
 
 void	split(t_stack_pair *st, int flag, int count, t_printer *printer);
-int	is_sort(t_stack_pair *stacks, int flag, int count);
+int		is_sort(t_stack_pair *stacks, int flag, int count);
 int		sort_len_3(t_stack_pair *stacks, int flag, t_printer *printer);
 int		sort(t_stack_pair *stacks, int flag, int count, t_printer *printer);
 int		sort_b(t_stack_pair *stacks, int count, t_printer *printer);
