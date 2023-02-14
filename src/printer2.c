@@ -39,6 +39,8 @@ int	add(t_printer *printer, char *str)
 	int	i;
 	int	len;
 
+	if (!printer)
+		return (0);
 	if (printer->len && alter_ego(str, printer))
 	{
 		free(printer->printer[printer->len -1]);
