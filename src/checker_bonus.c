@@ -6,7 +6,7 @@
 /*   By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:21:34 by vlepille          #+#    #+#             */
-/*   Updated: 2023/02/14 15:21:36 by vlepille         ###   ########.fr       */
+/*   Updated: 2023/04/15 13:07:58 by vlepille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	check_sort(t_stack_pair *stacks)
 	else
 		write(STDIN_FILENO, "KO\n", 3);
 }
-
 
 int	main(int argc, char **argv)
 {
