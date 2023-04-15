@@ -6,7 +6,7 @@
 /*   By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:23:57 by vlepille          #+#    #+#             */
-/*   Updated: 2023/01/18 18:23:58 by vlepille         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:47:03 by vlepille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	alter_ego(char *str, t_printer *printer)
 		|| versus(str, get(printer, -1), "sb", "sb"));
 }
 
-// @TODO look for sa and sb = ss (same for rrr and rr)
+// optional @TODO look for sa and sb = ss (same for rrr and rr)
 int	add(t_printer *printer, char *str)
 {
 	int	i;

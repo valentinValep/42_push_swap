@@ -6,7 +6,7 @@
 #    By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 02:24:43 by marvin            #+#    #+#              #
-#    Updated: 2023/02/14 14:48:15 by vlepille         ###   ########.fr        #
+#    Updated: 2023/04/15 18:46:51 by vlepille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,9 +59,9 @@ bonus : $(OBJ) $(MAIN_OBJ_BONUS)
 
 $(OBJECTS_DIR) :
 	mkdir $(OBJECTS_DIR)
-# @TODO rm -g3
+
 $(OBJECTS_DIR)%.o : $(SOURCES_DIR)%.c | $(OBJECTS_DIR)
-	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@ -g3
+	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 all : $(NAME)
 
