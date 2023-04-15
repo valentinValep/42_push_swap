@@ -6,7 +6,7 @@
 /*   By: vlepille <vlepille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:23:50 by vlepille          #+#    #+#             */
-/*   Updated: 2023/01/18 18:23:51 by vlepille         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:26:17 by vlepille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	main(int argc, char **argv)
 	t_printer		printer;
 	int				*tmp;
 
+	if (argc == 1)
+		return (1);
 	parse(argc, argv, &stacks);
 	tmp = stacks.tab;
 	stacks.tab = get_stack_as_rank(&stacks);
